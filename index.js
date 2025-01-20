@@ -1,6 +1,6 @@
 import express from "express";
-import db from "../Backend_run/src/db.js";
-import { raceMethods } from "../Backend_run/controllers/raceController.js";
+import db from "../Backend-run/src/db.js";
+import { raceMethods } from "../Backend-run/controllers/raceController.js";
 import { guestMethods } from "./controllers/guestController.js";
 import { radniciMethods } from "./controllers/adminController.js";
 // import data from "./store.js";
@@ -45,6 +45,28 @@ app.post("/guests", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+/*Utrke*/ 
+app.get("/race",raceMethods.getAllRaces);
+app.get("/race/:id",raceMethods.getRaceById);
+app.post("/race",raceMethods.newRace);
+app.delete("/race/:id",raceMethods.deleteRace);
+
+
+/*Gosti*/ 
+app.get("/guest",guestMethods.getAllGuests);
+app.get("/guest/:id",guestMethods.getGuestById);
+app.post("/guest",guestMethods.newGuest);
+app.delete("/guest/:id",guestMethods.deleteGuest);
+
+/*Admin*/
+app.get("/admin",radniciMethods.getAllRadnici); 
+app.get("/admin/:id",radniciMethods.getRadnikById);
+app.post("/admin",raceMethods.newRace);
+app.delete("/admin/:id",radniciMethods.deleteRadnik);
+
+
+
 
 app.listen(port, () => {
   console.log(`Servis radi na portu ${port}`);
