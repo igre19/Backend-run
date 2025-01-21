@@ -36,6 +36,38 @@ app.post("/auth", async (req, res) => {
     return res.status(403).json({ error: error.message });
   }
 });
+app.post("/authAdmin", async (req, res) => {
+  let adminData = req.body;
+
+  try {
+    const result = await auth.authenticateAdmin(
+      adminData.email,
+      adminData.password
+    );
+    return res.json(result);
+    return res.json({ token: result.token });
+  } catch (error) {
+    return res.status(403).json({ error: error.message });
+  }
+});
+app.put("/passAdmin", async (req, res) => {
+  let adminData = req.body;
+  try {
+    let result = await auth.updatePasswordAdmin(adminData);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+app.put("/passGuest", async (req, res) => {
+  let guestData = req.body;
+  try {
+    let result = await auth.updatePasswordGuest(guestData);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 app.post("/guests", async (req, res) => {
   let guestData = req.body;
   try {
@@ -45,28 +77,34 @@ app.post("/guests", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+app.post("/admins", async (req, res) => {
+  let adminData = req.body;
+  try {
+    let result = await auth.registerAdmin(adminData);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+/*Utrke*/
+app.get("/race", raceMethods.getAllRaces);
+app.get("/race/:id", raceMethods.getRaceById);
+app.post("/race", raceMethods.newRace);
+app.delete("/race/:id", raceMethods.deleteRace);
 
-/*Utrke*/ 
-app.get("/race",raceMethods.getAllRaces);
-app.get("/race/:id",raceMethods.getRaceById);
-app.post("/race",raceMethods.newRace);
-app.delete("/race/:id",raceMethods.deleteRace);
+/*Gosti*/
+app.get("/guest", guestMethods.getAllGuests);
+app.get("/guest/:id", guestMethods.getGuestById);
+app.get("/guest/email/:email", guestMethods.getGuestByEmail);
 
-
-/*Gosti*/ 
-app.get("/guest",guestMethods.getAllGuests);
-app.get("/guest/:id",guestMethods.getGuestById);
-app.post("/guest",guestMethods.newGuest);
-app.delete("/guest/:id",guestMethods.deleteGuest);
-
+app.delete("/guest/:id", guestMethods.deleteGuest);
+app.put("/guest", guestMethods.changeEmail);
 /*Admin*/
-app.get("/admin",radniciMethods.getAllRadnici); 
-app.get("/admin/:id",radniciMethods.getRadnikById);
-app.post("/admin",raceMethods.newRace);
-app.delete("/admin/:id",radniciMethods.deleteRadnik);
-
-
-
+app.get("/admin", radniciMethods.getAllRadnici);
+app.get("/admin/:id", radniciMethods.getRadnikById);
+app.get("/admin/email/:email", radniciMethods.getRadnikByEmail);
+app.post("/admin", raceMethods.newRace);
+app.delete("/admin/:id", radniciMethods.deleteRadnik);
 
 app.listen(port, () => {
   console.log(`Servis radi na portu ${port}`);

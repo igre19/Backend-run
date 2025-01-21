@@ -1,5 +1,6 @@
 import db from "../src/db.js";
 const radniciCollection = db.collection("worker");
+import { ObjectId } from "mongodb";
 
 // Ispisivanje svih radnika
 export const getAllRadnici = async (req, res) => {
@@ -17,6 +18,21 @@ export const getRadnikById = async (req, res) => {
 
   try {
     const radnik = await radniciCollection.findOne({ id: radnikId });
+    if (!radnik) {
+      return res
+        .status(404)
+        .json({ message: "Odabrani radnik nije pronađen." });
+    }
+    res.json(radnik);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getRadnikByEmail = async (req, res) => {
+  const radnikEmail = req.params.email;
+
+  try {
+    const radnik = await radniciCollection.findOne({ email: radnikEmail });
     if (!radnik) {
       return res
         .status(404)
@@ -64,9 +80,32 @@ export const deleteRadnik = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const changeEmail = async (req, res) => {
+  const workerId = req.body._id;
+  const workerEmail = req.body.email;
+  const workeUsername = req.body.username;
+  const { _id, email, username } = req.body;
+  try {
+    const result = await radniciCollection.updateOne(
+      { _id: new ObjectId(workerId) },
+      {
+        $set: {
+          email: guestEmail,
+          username: guestUsername,
+        },
+      }
+    );
+    res.status(201).json({ message: "Gost je updatan " });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+//
+
 export const radniciMethods = {
   getAllRadnici,
   getRadnikById,
+  getRadnikByEmail,
   newRadnik,
   deleteRadnik,
 };
