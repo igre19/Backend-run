@@ -1,5 +1,6 @@
 import db from "../src/db.js";
 const raceCollection = db.collection("races");
+import { ObjectId } from "mongodb";
 
 // Ispisivanje svih utrka
 export const getAllRaces = async (req, res) => {
@@ -46,6 +47,26 @@ export const newRace = async (req, res) => {
   }
 };
 
+export const changeRace = async (req, res) => {
+  const id = req.body._id;
+  const raceNaziv = req.body.naziv;
+  const raceVrsta = req.body.vrsta;
+  try {
+    const result = await raceCollection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          naziv: raceNaziv,
+          vrsta: raceVrsta,
+        },
+      }
+    );
+    res.status(201).json({ message: "Utrka je uspješno updatana.", result });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Brisanje samo jedne utrke
 export const deleteRace = async (req, res) => {
   const raceId = req.params.id;
@@ -69,4 +90,5 @@ export const raceMethods = {
   getRaceById,
   newRace,
   deleteRace,
+  changeRace,
 };
