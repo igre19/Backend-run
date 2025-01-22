@@ -91,8 +91,8 @@ export const changeEmail = async (req, res) => {
       { _id: new ObjectId(workerId) },
       {
         $set: {
-          email: guestEmail,
-          username: guestUsername,
+          email: workerEmail,
+          username: workeUsername,
         },
       }
     );
@@ -109,4 +109,5 @@ export const radniciMethods = {
   getRadnikByEmail,
   newRadnik,
   deleteRadnik,
+  changeEmail,
 };

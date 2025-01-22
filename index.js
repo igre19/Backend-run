@@ -97,7 +97,6 @@ app.put("/race", raceMethods.changeRace);
 app.get("/guest", guestMethods.getAllGuests);
 app.get("/guest/:id", guestMethods.getGuestById);
 app.get("/guest/email/:email", guestMethods.getGuestByEmail);
-
 app.delete("/guest/:id", guestMethods.deleteGuest);
 app.put("/guest", guestMethods.changeEmail);
 /*Admin*/
@@ -105,6 +104,7 @@ app.get("/admin", radniciMethods.getAllRadnici);
 app.get("/admin/:id", radniciMethods.getRadnikById);
 app.get("/admin/email/:email", radniciMethods.getRadnikByEmail);
 app.delete("/admin/:id", radniciMethods.deleteRadnik);
+app.put("/admin", radniciMethods.changeEmail);
 /*Favoriti*/
 app.get("/favorit", favoriteMethods.getAllFavorites);
 app.get("/favorit/:id", favoriteMethods.getFavoritesById);

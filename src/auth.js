@@ -40,6 +40,7 @@ export default {
           },
         }
       );
+      console.log("Lozinka promjenjena");
     } catch (e) {
       if (e.code === 11000) {
         throw new Error("Korisnik ne postoji");
