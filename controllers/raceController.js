@@ -26,6 +26,7 @@ export const getRacesByCreatorId = async (req, res) => {
 
   try {
     // Fetch the races created by the provided creatorId
+    console.log("Trazenje po creator id", creatorId);
     const races = await raceCollection.find({ creatorId }).toArray();
 
     // Check if races are found
