@@ -55,6 +55,7 @@ export const newRadnik = async (req, res) => {
       email,
       password,
       birthDate,
+      role,
     });
     res
       .status(201)
